@@ -1,8 +1,4 @@
-
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.AfterClass;
+import org.junit.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import java.util.concurrent.TimeUnit;
@@ -16,13 +12,68 @@ public class Tests {
     public static SettingsPage settingsPage;
 
     @Test
-    public void test() {
-
+    @Ignore
+    public void incorrectName() {
+        settingsPage.clickNameBtn();
+        settingsPage.clickSurnameBtn();
+        //передавать пар-ры
+        settingsPage.save();
+        //проверка
     }
 
     @Test
-    public void test2() {
+    @Ignore
+    public void incorrectDayOfBirthday() {
+        settingsPage.clickBirthDayBtn();
+        settingsPage.setDay();
+        settingsPage.save();
+        //проверка
+    }
 
+    @Test
+    @Ignore
+    public void incorrectMonthOfBirthday() {
+        settingsPage.clickBirthMonthBtn();
+        settingsPage.setMonth();
+        settingsPage.save();
+        //проверка
+    }
+
+    @Test
+    @Ignore
+    public void incorrectYearOfBirthday() {
+        settingsPage.clickBirthYearBtn();
+        settingsPage.setYear();
+        settingsPage.save();
+        //проверка
+    }
+
+    @Test
+    @Ignore
+    public void incorrectCity() {
+
+        settingsPage.clickCurrentCityBtn();
+        settingsPage.setCity(ConfProperties.getProperty("incorrectCity1"), 0);
+        settingsPage.save();
+        //проверка
+
+        settingsPage.clickNativeCityBtn();
+        settingsPage.setCity(ConfProperties.getProperty("incorrectCity2"), 1);
+        settingsPage.save();
+        //проверка
+    }
+
+    @Test
+    public void changeCity() {
+        settingsPage.clickCurrentCityBtn();
+        settingsPage.setCity(ConfProperties.getProperty("correctCity1"), 0);
+        settingsPage.save();
+        //проверка
+
+        settingsPage.clickCurrentCityBtn();
+        settingsPage.setCity(ConfProperties.getProperty("correctCity2"), 0);
+        settingsPage.save();
+        //проверка
     }
 
     @BeforeClass
@@ -42,6 +93,11 @@ public class Tests {
         loginPage.inputLogin(ConfProperties.getProperty("login"));
         loginPage.inputPasswd(ConfProperties.getProperty("password"));
         loginPage.clickLoginBtn();
+
+        tmpPage.clickMenuBtn();
+        tmpPage.clickSettingsBtn();
+
+        settingsPage.clickPersonalDataBtn();
     }
 
     @AfterClass
