@@ -15,11 +15,36 @@ public class Tests {
     public void incorrectName() {
 
         settingsPage.clickNameBtn();
-        settingsPage.clickSurnameBtn();
-        settingsPage.setName(ConfProperties.getProperty("newName"));
-        settingsPage.setSurname(ConfProperties.getProperty("newSurname"));
+        settingsPage.setName("newName");
         settingsPage.save();
-        settingsPage.check("nameAlert", "incorrectName");
+        settingsPage.check("incorrectNameAlert", "incorrectName");
+    }
+
+    @Test
+    public void emptyName() {
+
+        settingsPage.clickNameBtn();
+        settingsPage.setName("emptyName");
+        settingsPage.save();
+        settingsPage.check("emptyNameAlert", "emptyName");
+    }
+
+    @Test
+    public void incorrectSurname() {
+
+        settingsPage.clickSurnameBtn();
+        settingsPage.setSurname("newSurname");
+        settingsPage.save();
+        settingsPage.check("incorrectNameAlert", "incorrectSurname");
+    }
+
+    @Test
+    public void emptySurname() {
+
+        settingsPage.clickSurnameBtn();
+        settingsPage.setSurname("emptySurname");
+        settingsPage.save();
+        settingsPage.check("emptySurnameAlert", "emptySurname");
     }
 
     @Test
@@ -74,13 +99,12 @@ public class Tests {
         settingsPage.setCity(ConfProperties.getProperty("correctCity1"), 0);
         settingsPage.save();
         settingsPage.clickPersonalDataBtn();
-        String city = settingsPage.getCity();
-        System.out.println(city);
-        Assert.assertEquals("Санкт-Петербург", city);
-        System.out.println("Test of change city is successful");
+        String city = settingsPage.getCity(0);
+        settingsPage.check(city, "correctCity1", "changeCity");
     }
 
     @Test
+    @Ignore
     public void changeBirthday() {
 
         settingsPage.clickBirthDayBtn();
@@ -88,14 +112,14 @@ public class Tests {
         settingsPage.setBirthday(ConfProperties.getProperty("newMonth"));
         settingsPage.setBirthday(ConfProperties.getProperty("newYear"));
         settingsPage.save();
+
         settingsPage.clickPersonalDataBtn();
         String bDay = settingsPage.getBirthday(0);
-        Assert.assertEquals(ConfProperties.getProperty("newDay"), bDay);
+        settingsPage.check(bDay, "newDay", "changeBirthdayDay");
         String bMonth = settingsPage.getBirthday(1);
-        Assert.assertEquals(ConfProperties.getProperty("newMonth"), bMonth);
+        settingsPage.check(bMonth, "newMonth", "changeBirthdayMonth");
         String bYear = settingsPage.getBirthday(2);
-        Assert.assertEquals(ConfProperties.getProperty("newYear"), bYear);
-        System.out.println("Test of change city is successful");
+        settingsPage.check(bYear, "newYear", "changeBirthdayYear");
 
     }
 

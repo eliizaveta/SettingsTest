@@ -2,6 +2,7 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
@@ -14,6 +15,7 @@ public class SettingsPage {
     }
 
     @FindBy(xpath = ".//a[@class='user-settings_i']/div[contains(text(), 'Личные данные')]")
+    @CacheLookup
     private WebElement personalDataBtn;
 
     @FindBy(xpath = ".//input[@id='field_name']")
@@ -56,7 +58,7 @@ public class SettingsPage {
 
     public void setName(String newName) {
         name.clear();
-        name.sendKeys(newName);
+        name.sendKeys(ConfProperties.getProperty(newName));
     }
 
     public void clickSurnameBtn() {
@@ -65,7 +67,7 @@ public class SettingsPage {
 
     public void setSurname(String newSurname) {
         surname.clear();
-        surname.sendKeys(newSurname);
+        surname.sendKeys(ConfProperties.getProperty(newSurname));
     }
 
     public void clickCurrentCityBtn() {
@@ -98,14 +100,18 @@ public class SettingsPage {
     }
 
     public String getBirthday(int i) {
+
         String tmp = null;
         switch (i) {
             case 0:
-                tmp = birthDay.getText();
+                tmp = birthDay.getAttribute("value");
+                break;
             case 1:
-                tmp = birthMonth.getText();
+                tmp = birthMonth.getAttribute("value");
+                break;
             case 2:
-                tmp = birthYear.getText();
+                tmp = birthYear.getAttribute("value");
+                break;
         }
         return tmp;
     }
@@ -131,14 +137,27 @@ public class SettingsPage {
         }
     }
 
-    public String getCity() {
-        String tmp = currentCity.getText();
+    public String getCity(int i) {
+        String tmp = null;
+        switch (i) {
+            case 0:
+                tmp = currentCity.getAttribute("value");
+                break;
+            case 1:
+                tmp = nativeCity.getAttribute("value");
+                break;
+        }
         return tmp;
     }
 
-    public void check(String notification, String name) {
+    public void check(String notification, String testName) {
         Assert.assertTrue("No error notifications", ConfProperties.isElementHere(driver,
                 ConfProperties.getProperty(notification)));
-        System.out.println("Test " + name + " is successful");
+        System.out.println("Test " + testName + " is successful");
+    }
+
+    public void check(String variable ,String parameter, String testName) {
+        Assert.assertEquals(ConfProperties.getProperty(parameter), variable);
+        System.out.println("Test " + testName + " is successful");
     }
 }
