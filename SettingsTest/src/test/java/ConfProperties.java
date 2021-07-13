@@ -33,4 +33,14 @@ public class ConfProperties {
     public static String getProperty(String key) {
         return PROPERTIES.getProperty(key);
     }
+
+    public static boolean isElementHere(WebDriver driver, String XPATH){
+        try{
+            driver.findElement(By.xpath(XPATH));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }
