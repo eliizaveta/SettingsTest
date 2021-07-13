@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -95,6 +96,7 @@ public class SettingsPage {
             System.out.println("There isn't any Birthday fields like this");
         }
     }
+
     public String getBirthday(int i) {
         String tmp = null;
         switch (i) {
@@ -129,16 +131,14 @@ public class SettingsPage {
         }
     }
 
-    public String getCity(int i) {
-        String tmp = null;
-        switch (i) {
-            case 0:
-                tmp = currentCity.getText();
-                break;
-            case 1:
-                tmp = nativeCity.getText();
-                break;
-        }
+    public String getCity() {
+        String tmp = currentCity.getText();
         return tmp;
+    }
+
+    public void check(String notification, String name) {
+        Assert.assertTrue("No error notifications", ConfProperties.isElementHere(driver,
+                ConfProperties.getProperty(notification)));
+        System.out.println("Test " + name + " is successful");
     }
 }

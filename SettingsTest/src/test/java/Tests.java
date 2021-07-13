@@ -19,70 +19,63 @@ public class Tests {
         settingsPage.setName(ConfProperties.getProperty("newName"));
         settingsPage.setSurname(ConfProperties.getProperty("newSurname"));
         settingsPage.save();
-        Assert.assertTrue("No error notifications", ConfProperties.isElementHere(driver,
-                ConfProperties.getProperty("notificationLocator")));
-        System.out.println("Test of incorrect name is successful");
+        settingsPage.check("nameAlert", "incorrectName");
     }
 
     @Test
     public void incorrectDayOfBirthday() {
 
         settingsPage.clickBirthDayBtn();
-        settingsPage.setBirthday("день");
+        settingsPage.setBirthday(ConfProperties.getProperty("incorrectDay"));
         settingsPage.save();
-        Assert.assertTrue("No error notifications", ConfProperties.isElementHere(driver,
-                ConfProperties.getProperty("notificationLocator")));
-        System.out.println("Test of incorrect day of birth is successful");
+        settingsPage.check("birthdayAlert", "incorrectDayOfBirthday");
     }
 
     @Test
     public void incorrectMonthOfBirthday() {
 
         settingsPage.clickBirthMonthBtn();
-        settingsPage.setBirthday("месяц");
+        settingsPage.setBirthday(ConfProperties.getProperty("incorrectMonth"));
         settingsPage.save();
-        Assert.assertTrue("No error notifications", ConfProperties.isElementHere(driver,
-                ConfProperties.getProperty("notificationLocator")));
-        System.out.println("Test of incorrect month of birth is successful");
+        settingsPage.check("birthdayAlert", "incorrectMonthOfBirthday");
     }
 
     @Test
     public void incorrectYearOfBirthday() {
 
         settingsPage.clickBirthYearBtn();
-        settingsPage.setBirthday("год");
+        settingsPage.setBirthday(ConfProperties.getProperty("incorrectYear"));
         settingsPage.save();
-        Assert.assertTrue("No error notifications", ConfProperties.isElementHere(driver,
-                ConfProperties.getProperty("notificationLocator")));
-        System.out.println("Test of incorrect year of birth is successful");
+        settingsPage.check("birthdayAlert", "incorrectYearOfBirthday");
     }
 
     @Test
-    public void incorrectCity() {
+    public void incorrectCurrentCity() {
 
         settingsPage.clickCurrentCityBtn();
         settingsPage.setCity(ConfProperties.getProperty("incorrectCity1"), 0);
         settingsPage.save();
-        Assert.assertTrue("No error notifications", ConfProperties.isElementHere(driver,
-                ConfProperties.getProperty("notificationLocator")));
-        System.out.println("Test of incorrect city is successful");
+        settingsPage.check("currentCityAlert", "incorrectCurrentCity");
+    }
+
+    @Test
+    public void incorrectNativeCity() {
 
         settingsPage.clickNativeCityBtn();
         settingsPage.setCity(ConfProperties.getProperty("incorrectCity2"), 1);
         settingsPage.save();
-        Assert.assertTrue("No error notifications", ConfProperties.isElementHere(driver,
-                ConfProperties.getProperty("notificationLocator")));
-        System.out.println("Test of incorrect city is successful");
+        settingsPage.check("nativeCityAlert", "incorrectNativeCity");
     }
 
     @Test
     public void changeCity() {
 
         settingsPage.clickCurrentCityBtn();
-        settingsPage.setCity("Санкт-Петербург", 0);
+        settingsPage.setCity(ConfProperties.getProperty("correctCity1"), 0);
         settingsPage.save();
         settingsPage.clickPersonalDataBtn();
-        String city = settingsPage.getCity(0);
+        String city = settingsPage.getCity();
+        System.out.println(city);
         Assert.assertEquals("Санкт-Петербург", city);
         System.out.println("Test of change city is successful");
     }
@@ -91,18 +84,17 @@ public class Tests {
     public void changeBirthday() {
 
         settingsPage.clickBirthDayBtn();
-        settingsPage.setBirthday("2");
-        settingsPage.setBirthday("февраль");
-        settingsPage.setBirthday("2000");
+        settingsPage.setBirthday(ConfProperties.getProperty("newDay"));
+        settingsPage.setBirthday(ConfProperties.getProperty("newMonth"));
+        settingsPage.setBirthday(ConfProperties.getProperty("newYear"));
         settingsPage.save();
         settingsPage.clickPersonalDataBtn();
         String bDay = settingsPage.getBirthday(0);
-        System.out.println(bDay);
-        Assert.assertEquals("2", bDay);
+        Assert.assertEquals(ConfProperties.getProperty("newDay"), bDay);
         String bMonth = settingsPage.getBirthday(1);
-        Assert.assertEquals("февраль", bMonth);
+        Assert.assertEquals(ConfProperties.getProperty("newMonth"), bMonth);
         String bYear = settingsPage.getBirthday(2);
-        Assert.assertEquals("2000", bYear);
+        Assert.assertEquals(ConfProperties.getProperty("newYear"), bYear);
         System.out.println("Test of change city is successful");
 
     }
