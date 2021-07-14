@@ -1,6 +1,7 @@
 import org.junit.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+
 import java.util.concurrent.TimeUnit;
 
 public class Tests {
@@ -10,6 +11,7 @@ public class Tests {
     public static LoginPage loginPage;
     public static TmpPage tmpPage;
     public static SettingsPage settingsPage;
+
 
     @Test
     public void incorrectName() {
@@ -51,7 +53,7 @@ public class Tests {
     public void incorrectDayOfBirthday() {
 
         settingsPage.clickBirthDayBtn();
-        settingsPage.setBirthday(ConfProperties.getProperty("incorrectDay"));
+        settingsPage.setBirthday("incorrectDay");
         settingsPage.save();
         settingsPage.check("birthdayAlert", "incorrectDayOfBirthday");
     }
@@ -60,7 +62,7 @@ public class Tests {
     public void incorrectMonthOfBirthday() {
 
         settingsPage.clickBirthMonthBtn();
-        settingsPage.setBirthday(ConfProperties.getProperty("incorrectMonth"));
+        settingsPage.setBirthday("incorrectMonth");
         settingsPage.save();
         settingsPage.check("birthdayAlert", "incorrectMonthOfBirthday");
     }
@@ -69,7 +71,7 @@ public class Tests {
     public void incorrectYearOfBirthday() {
 
         settingsPage.clickBirthYearBtn();
-        settingsPage.setBirthday(ConfProperties.getProperty("incorrectYear"));
+        settingsPage.setBirthday("incorrectYear");
         settingsPage.save();
         settingsPage.check("birthdayAlert", "incorrectYearOfBirthday");
     }
@@ -78,7 +80,7 @@ public class Tests {
     public void incorrectCurrentCity() {
 
         settingsPage.clickCurrentCityBtn();
-        settingsPage.setCity(ConfProperties.getProperty("incorrectCity1"), 0);
+        settingsPage.setCity("incorrectCity1", "current");
         settingsPage.save();
         settingsPage.check("currentCityAlert", "incorrectCurrentCity");
     }
@@ -87,32 +89,34 @@ public class Tests {
     public void incorrectNativeCity() {
 
         settingsPage.clickNativeCityBtn();
-        settingsPage.setCity(ConfProperties.getProperty("incorrectCity2"), 1);
+        settingsPage.setCity("incorrectCity2", "native");
         settingsPage.save();
         settingsPage.check("nativeCityAlert", "incorrectNativeCity");
     }
 
     @Test
-    public void changeCity() {
+    public void changeCity() throws InterruptedException {
 
         settingsPage.clickCurrentCityBtn();
-        settingsPage.setCity(ConfProperties.getProperty("correctCity1"), 0);
+        settingsPage.setCity("correctCity1", "current");
         settingsPage.save();
+
+        Thread.sleep(1000);
         settingsPage.clickPersonalDataBtn();
-        String city = settingsPage.getCity(0);
+        String city = settingsPage.getCity("current");
         settingsPage.check(city, "correctCity1", "changeCity");
     }
 
     @Test
-    @Ignore
-    public void changeBirthday() {
+    public void changeBirthday() throws InterruptedException {
 
         settingsPage.clickBirthDayBtn();
-        settingsPage.setBirthday(ConfProperties.getProperty("newDay"));
-        settingsPage.setBirthday(ConfProperties.getProperty("newMonth"));
-        settingsPage.setBirthday(ConfProperties.getProperty("newYear"));
+        settingsPage.setBirthday("newDay");
+        settingsPage.setBirthday("newMonth");
+        settingsPage.setBirthday("newYear");
         settingsPage.save();
 
+        Thread.sleep(1000);
         settingsPage.clickPersonalDataBtn();
         String bDay = settingsPage.getBirthday(0);
         settingsPage.check(bDay, "newDay", "changeBirthdayDay");
@@ -120,11 +124,6 @@ public class Tests {
         settingsPage.check(bMonth, "newMonth", "changeBirthdayMonth");
         String bYear = settingsPage.getBirthday(2);
         settingsPage.check(bYear, "newYear", "changeBirthdayYear");
-
-    }
-
-    @Test
-    public void changeSex() {
 
     }
 
@@ -140,6 +139,7 @@ public class Tests {
 
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
         driver.get(ConfProperties.getProperty("loginpage"));
 
         loginPage.inputLogin(ConfProperties.getProperty("login"));
