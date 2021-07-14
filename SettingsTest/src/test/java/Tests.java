@@ -118,11 +118,11 @@ public class Tests {
 
         Thread.sleep(1000);
         settingsPage.clickPersonalDataBtn();
-        String bDay = settingsPage.getBirthday(0);
+        String bDay = settingsPage.getBirthday("day");
         settingsPage.check(bDay, "newDay", "changeBirthdayDay");
-        String bMonth = settingsPage.getBirthday(1);
+        String bMonth = settingsPage.getBirthday("month");
         settingsPage.check(bMonth, "newMonth", "changeBirthdayMonth");
-        String bYear = settingsPage.getBirthday(2);
+        String bYear = settingsPage.getBirthday("year");
         settingsPage.check(bYear, "newYear", "changeBirthdayYear");
 
     }

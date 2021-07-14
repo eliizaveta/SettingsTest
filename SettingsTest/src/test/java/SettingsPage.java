@@ -108,17 +108,17 @@ public class SettingsPage {
         }
     }
 
-    public String getBirthday(int i) {
+    public String getBirthday(String i) {
 
         String tmp = " ";
         switch (i) {
-            case 0:
+            case "day":
                 tmp = birthDaySelected.getAttribute("value");
                 break;
-            case 1:
+            case "month":
                 tmp = birthMonthSelected.getText();
                 break;
-            case 2:
+            case "year":
                 tmp = birthYearSelected.getAttribute("value");
                 break;
         }
