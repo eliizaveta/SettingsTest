@@ -28,10 +28,10 @@ public class SettingsPage {
     private WebElement currentCity;
 
     @FindBy(xpath = ".//div[@class='ellip']")
-    private WebElement firstCity;
+    private WebElement firstCurrentCity;
 
     @FindBy(xpath = ".//div[@id='citySugg_InputContainer']")
-    private WebElement cityInput;
+    private WebElement currentCityInput;
 
     @FindBy(xpath = ".//input[@id='field_cityBSugg_SearchInput']")
     private WebElement nativeCity;
@@ -54,10 +54,20 @@ public class SettingsPage {
     @FindBy(xpath = ".//select[@id='field_byear']/option[@selected='selected']")
     private WebElement birthYearSelected;
 
+    @FindBy(xpath = ".//li[@class='form_ul_li']/input[@checked='checked']")
+    private WebElement genderSelected;
+
     @FindBy(xpath = ".//input[@name='button_savePopLayerEditUserProfileNew']")
     private WebElement saveBtn;
 
-    public void clickPersonalDataBtn() {
+    @FindBy(xpath = ".//input[@value='1']")
+    private WebElement manBtn;
+
+    @FindBy(xpath = ".//input[@value='2']")
+    private WebElement womanBtn;
+
+    public void clickPersonalDataBtn(WebDriverWait wait) {
+        wait.until(ExpectedConditions.visibilityOf(personalDataBtn));
         personalDataBtn.click();
     }
 
@@ -65,18 +75,8 @@ public class SettingsPage {
         name.click();
     }
 
-    public void setName(String newName) {
-        name.clear();
-        name.sendKeys(ConfProperties.getProperty(newName));
-    }
-
     public void clickSurnameBtn() {
         surname.click();
-    }
-
-    public void setSurname(String newSurname) {
-        surname.clear();
-        surname.sendKeys(ConfProperties.getProperty(newSurname));
     }
 
     public void clickCurrentCityBtn() {
@@ -99,6 +99,28 @@ public class SettingsPage {
         birthYear.click();
     }
 
+    public void save() {
+        saveBtn.click();
+    }
+
+    public void setName(String newName) {
+        name.clear();
+        name.sendKeys(ConfProperties.getProperty(newName));
+    }
+
+    public void setSurname(String newSurname) {
+        surname.clear();
+        surname.sendKeys(ConfProperties.getProperty(newSurname));
+    }
+
+    public void setMaleGender() {
+        manBtn.click();
+    }
+
+    public void setFemaleGender() {
+        womanBtn.click();
+    }
+
     public void setBirthday(String day) {
         try {
             String dayLocator = ".//option[contains(text(),'" + ConfProperties.getProperty(day) +"')]";
@@ -108,9 +130,30 @@ public class SettingsPage {
         }
     }
 
+    public void setCity(String newCity, String  i) {
+        switch (i) {
+            case "current":
+                currentCity.clear();
+                currentCity.sendKeys(ConfProperties.getProperty(newCity));
+                currentCityInput.click();
+                try {
+                    firstCurrentCity.click();
+                } catch (Exception e) { }
+                break;
+            case "native":
+                nativeCity.clear();
+                nativeCity.sendKeys(ConfProperties.getProperty(newCity));
+                break;
+        }
+    }
+
+    public String getGender() {
+        return genderSelected.getAttribute("value");
+    }
+
     public String getBirthday(String i) {
 
-        String tmp = " ";
+        String tmp = "";
         switch (i) {
             case "day":
                 tmp = birthDaySelected.getAttribute("value");
@@ -125,29 +168,8 @@ public class SettingsPage {
         return tmp;
     }
 
-    public void save() {
-        saveBtn.click();
-    }
-
-    public void setCity(String newCity, String  i) {
-        switch (i) {
-            case "current":
-            currentCity.clear();
-            currentCity.sendKeys(ConfProperties.getProperty(newCity));
-            cityInput.click();
-            try {
-                firstCity.click();
-            } catch (Exception e) { }
-            break;
-            case "native":
-            nativeCity.clear();
-            nativeCity.sendKeys(ConfProperties.getProperty(newCity));
-            break;
-        }
-    }
-
     public String getCity(String i) {
-        String tmp = null;
+        String tmp = "";
         switch (i) {
             case "current":
                 tmp = currentCity.getAttribute("value");

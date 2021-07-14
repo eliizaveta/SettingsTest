@@ -46,5 +46,4 @@ public class ConfProperties {
             return false;
         }
     }
-
 }
