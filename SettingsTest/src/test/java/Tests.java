@@ -15,6 +15,7 @@ public class Tests {
     public static SettingsPage settingsPage;
 
 
+
     @Test
     public void incorrectName() {
 
@@ -33,7 +34,11 @@ public class Tests {
         settingsPage.check("emptyNameAlert", "empty name");
     }
 
+
     @Test
+    /**
+     * данный тест находит баг, который позволяет менять фамилию (и аналогично имя) на цифры
+     */
     public void incorrectSurname() {
 
         settingsPage.clickSurnameBtn();
@@ -124,7 +129,6 @@ public class Tests {
         settingsPage.check(bMonth, "newMonth", "change birthday month");
         String bYear = settingsPage.getBirthday("year");
         settingsPage.check(bYear, "newYear", "change birthday year");
-
     }
 
     @Test
